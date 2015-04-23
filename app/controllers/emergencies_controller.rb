@@ -12,12 +12,7 @@ class EmergenciesController < ApplicationController
       render :nothing => true, status: :not_found
     end
   end
-
-  # GET /emergencies/new
-  def new
-    @emergency = Emergency.new
-  end
-
+  
   # POST /emergencies
   def create
     @emergency = Emergency.new(create_emergency_params)
