@@ -19,7 +19,7 @@ class RespondersController < ApplicationController
   
   # POST /responders/
   def create
-    @responder = Responder.new(responder_params)
+    @responder = Responder.new(create_responder_params)
 
     if @responder.save
       render :show, status: :created, location: @responder
@@ -30,7 +30,7 @@ class RespondersController < ApplicationController
 
   # PATCH/PUT /responders/F-100
   def update
-    if @responder.update(responder_params)
+    if @responder.update(update_responder_params)
       render :show, status: :ok, location: @responder
     else
       render json: @responder.errors, status: :unprocessable_entity
@@ -44,8 +44,12 @@ class RespondersController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def responder_params
+    def create_responder_params
       params.require(:responder).permit(:type, :name, :capacity)
+    end
+
+    def update_responder_params
+      params.require(:responder).permit(:on_duty)
     end
 
     def unpermitted_parameters(error)
