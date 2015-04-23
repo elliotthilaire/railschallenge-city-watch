@@ -1,0 +1,16 @@
+# Read about fixtures at
+# http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  emergency_code: MyString
+  type_of: MyString
+  name: MyString
+  capacity: 1
+  on_duty: false
+
+two:
+  emergency_code: MyString
+  type_of: MyString
+  name: MyString
+  capacity: 1
+  on_duty: false

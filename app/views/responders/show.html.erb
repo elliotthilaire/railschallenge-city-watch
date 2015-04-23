@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Emergency code:</strong>
+  <%= @responder.emergency_code %>
+</p>
+
+<p>
+  <strong>Type of:</strong>
+  <%= @responder.type_of %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @responder.name %>
+</p>
+
+<p>
+  <strong>Capacity:</strong>
+  <%= @responder.capacity %>
+</p>
+
+<p>
+  <strong>On duty:</strong>
+  <%= @responder.on_duty %>
+</p>
+
+<%= link_to 'Edit', edit_responder_path(@responder) %> |
+<%= link_to 'Back', responders_path %>
