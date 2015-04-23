@@ -1,5 +1,6 @@
 class RespondersController < ApplicationController
   before_action :set_responder, only: [:show, :edit, :update, :destroy]
+  rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameters
 
   # GET /responders
   # GET /responders.json
@@ -69,6 +70,12 @@ class RespondersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def responder_params
-      params.require(:responder).permit(:emergency_code, :type, :name, :capacity, :on_duty)
+      params.require(:responder).permit(:type, :name, :capacity)
     end
+
+    def unpermitted_parameters(error)
+      render json: {message: error.message}, status: :unprocessable_entity
+    end
+
+
 end
