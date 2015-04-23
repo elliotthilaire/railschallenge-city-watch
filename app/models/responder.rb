@@ -5,6 +5,8 @@ class Responder < ActiveRecord::Base
 
   validates_uniqueness_of :name
   validates_presence_of :name, :type, :capacity
+  validates :capacity, :inclusion => 1..5
+
 
 
 end
