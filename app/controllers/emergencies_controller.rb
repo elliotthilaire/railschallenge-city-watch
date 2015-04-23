@@ -8,8 +8,11 @@ class EmergenciesController < ApplicationController
     @emergencies = Emergency.all
   end
 
-  # GET /emergencies/1
+  # GET /emergencies/E-00000001
   def show
+    if @emergency.nil?
+      render :nothing => true, status: :not_found
+    end
   end
 
   # GET /emergencies/new
@@ -57,7 +60,7 @@ class EmergenciesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_emergency
-      @emergency = Emergency.find(params[:id])
+      @emergency = Emergency.find_by(code: params[:code])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
