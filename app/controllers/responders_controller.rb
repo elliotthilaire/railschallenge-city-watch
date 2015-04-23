@@ -1,6 +1,5 @@
 class RespondersController < ApplicationController
   before_action :set_responder, only: [:show, :edit, :update]
-  rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameters
 
   # GET /responders
   def index
@@ -51,10 +50,4 @@ class RespondersController < ApplicationController
     def update_responder_params
       params.require(:responder).permit(:on_duty)
     end
-
-    def unpermitted_parameters(error)
-      render json: {message: error.message}, status: :unprocessable_entity
-    end
-
-
 end

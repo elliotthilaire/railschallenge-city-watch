@@ -1,7 +1,5 @@
 class EmergenciesController < ApplicationController
   before_action :set_emergency, only: [:show, :edit, :update, :destroy]
-  rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameters
-
 
   # GET /emergencies
   def index
@@ -52,9 +50,5 @@ class EmergenciesController < ApplicationController
 
     def update_emergency_params
       params.require(:emergency).permit(:fire_severity, :police_severity, :medical_severity)
-    end
-
-    def unpermitted_parameters(error)
-      render json: {message: error.message}, status: :unprocessable_entity
     end
 end
