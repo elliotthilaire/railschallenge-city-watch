@@ -26,7 +26,7 @@ class EmergenciesController < ApplicationController
 
   # POST /emergencies
   def create
-    @emergency = Emergency.new(emergency_params)
+    @emergency = Emergency.new(create_emergency_params)
 
     if @emergency.save
       render :show, status: :created, location: @emergency
@@ -35,17 +35,13 @@ class EmergenciesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /emergencies/1
+  # PATCH/PUT /emergencies/E-00000001
   def update
-    respond_to do |format|
-      if @emergency.update(emergency_params)
-        format.html { redirect_to @emergency, notice: 'Emergency was successfully updated.' }
-        format.json { render :show, status: :ok, location: @emergency }
+      if @emergency.update(update_emergency_params)
+        render :show, status: :ok, location: @emergency
       else
-        format.html { render :edit }
-        format.json { render json: @emergency.errors, status: :unprocessable_entity }
+        render json: @emergency.errors, status: :unprocessable_entity
       end
-    end
   end
 
   # DELETE /emergencies/1
@@ -63,9 +59,12 @@ class EmergenciesController < ApplicationController
       @emergency = Emergency.find_by(code: params[:code])
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def emergency_params
+    def create_emergency_params
       params.require(:emergency).permit(:code, :fire_severity, :police_severity, :medical_severity)
+    end
+
+    def update_emergency_params
+      params.require(:emergency).permit(:fire_severity, :police_severity, :medical_severity)
     end
 
     def unpermitted_parameters(error)
