@@ -1,16 +1,14 @@
 class RespondersController < ApplicationController
-  before_action :set_responder, only: [:show, :edit, :update, :destroy]
+  before_action :set_responder, only: [:show, :edit, :update]
   rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameters
 
   # GET /responders
   # GET /responders.json
   def index
     @responders = Responder.all
-
     if @responders.nil?
       render :nothing => true, status: :not_found
     end
-    
   end
 
   # GET /responders/1
@@ -20,17 +18,7 @@ class RespondersController < ApplicationController
       render :nothing => true, status: :not_found
     end
   end
-
-  # GET /responders/new
-  def new
-    render json: {message: 'page not found'}, status: :not_found
-  end
-
-  # GET /responders/1/edit
-  def edit
-    render json: {message: 'page not found'}, status: :not_found
-  end
-
+  
   # POST /responders
   # POST /responders.json
   def create
@@ -59,17 +47,6 @@ class RespondersController < ApplicationController
         format.json { render json: @responder.errors, status: :unprocessable_entity }
       end
     end
-  end
-
-  # DELETE /responders/1
-  # DELETE /responders/1.json
-  def destroy
-    render json: {message: 'page not found'}, status: :not_found
-    #@responder.destroy
-    #respond_to do |format|
-    #  format.html { redirect_to responders_url, notice: 'Responder was successfully destroyed.' }
-    #  format.json { head :no_content }
-    #end
   end
 
   private
