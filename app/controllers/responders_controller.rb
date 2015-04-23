@@ -21,27 +21,19 @@ class RespondersController < ApplicationController
   def create
     @responder = Responder.new(responder_params)
 
-    respond_to do |format|
-      if @responder.save
-        format.html { redirect_to @responder, notice: 'Responder was successfully created.' }
-        format.json { render :show, status: :created, location: @responder }
-      else
-        format.html { render :new }
-        format.json { render json: {message: @responder.errors}, status: :unprocessable_entity }
-      end
+    if @responder.save
+      render :show, status: :created, location: @responder
+    else
+      render json: {message: @responder.errors}, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /responders/F-100
   def update
-    respond_to do |format|
-      if @responder.update(responder_params)
-        format.html { redirect_to @responder, notice: 'Responder was successfully updated.' }
-        format.json { render :show, status: :ok, location: @responder }
-      else
-        format.html { render :edit }
-        format.json { render json: @responder.errors, status: :unprocessable_entity }
-      end
+    if @responder.update(responder_params)
+      render :show, status: :ok, location: @responder
+    else
+      render json: @responder.errors, status: :unprocessable_entity
     end
   end
 
