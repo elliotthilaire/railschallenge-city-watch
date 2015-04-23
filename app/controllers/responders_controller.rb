@@ -3,7 +3,6 @@ class RespondersController < ApplicationController
   rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameters
 
   # GET /responders
-  # GET /responders.json
   def index
     @responders = Responder.all
     if @responders.nil?
@@ -11,16 +10,14 @@ class RespondersController < ApplicationController
     end
   end
 
-  # GET /responders/1
-  # GET /responders/1.json
+  # GET /responders/F-100
   def show
     if @responder.nil?
       render :nothing => true, status: :not_found
     end
   end
   
-  # POST /responders
-  # POST /responders.json
+  # POST /responders/
   def create
     @responder = Responder.new(responder_params)
 
@@ -35,8 +32,7 @@ class RespondersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /responders/1
-  # PATCH/PUT /responders/1.json
+  # PATCH/PUT /responders/F-100
   def update
     respond_to do |format|
       if @responder.update(responder_params)
