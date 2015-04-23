@@ -6,6 +6,11 @@ class RespondersController < ApplicationController
   # GET /responders.json
   def index
     @responders = Responder.all
+
+    if @responders.nil?
+      render :nothing => true, status: :not_found
+    end
+    
   end
 
   # GET /responders/1
