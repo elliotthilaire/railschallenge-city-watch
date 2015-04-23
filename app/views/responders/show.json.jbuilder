@@ -1,7 +1,7 @@
 json.responder do
-  json.emergency_code nil
+  json.emergency_code @responder.emergency_code
   json.type @responder.type
   json.name @responder.name
   json.capacity @responder.capacity
-  json.on_duty false
+  json.on_duty @responder.on_duty
 end

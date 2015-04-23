@@ -11,16 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423041728) do
+ActiveRecord::Schema.define(version: 20150423061500) do
 
   create_table "responders", force: :cascade do |t|
     t.string   "emergency_code"
     t.string   "type_of"
     t.string   "name"
     t.integer  "capacity"
-    t.boolean  "on_duty"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.boolean  "on_duty",        default: false, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
 end
