@@ -11,6 +11,9 @@ class RespondersController < ApplicationController
   # GET /responders/1
   # GET /responders/1.json
   def show
+    if @responder.nil?
+      render :nothing => true, status: :not_found
+    end
   end
 
   # GET /responders/new
@@ -65,7 +68,7 @@ class RespondersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_responder
-      @responder = Responder.find(params[:id])
+      @responder = Responder.find_by(name: params[:name])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
