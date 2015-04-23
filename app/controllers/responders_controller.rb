@@ -23,11 +23,12 @@ class RespondersController < ApplicationController
 
   # GET /responders/new
   def new
-    @responder = Responder.new
+    render json: {message: 'page not found'}, status: :not_found
   end
 
   # GET /responders/1/edit
   def edit
+    render json: {message: 'page not found'}, status: :not_found
   end
 
   # POST /responders
@@ -63,11 +64,12 @@ class RespondersController < ApplicationController
   # DELETE /responders/1
   # DELETE /responders/1.json
   def destroy
-    @responder.destroy
-    respond_to do |format|
-      format.html { redirect_to responders_url, notice: 'Responder was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    render json: {message: 'page not found'}, status: :not_found
+    #@responder.destroy
+    #respond_to do |format|
+    #  format.html { redirect_to responders_url, notice: 'Responder was successfully destroyed.' }
+    #  format.json { head :no_content }
+    #end
   end
 
   private
