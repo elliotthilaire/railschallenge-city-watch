@@ -1,1 +1,7 @@
-json.extract! @responder, :id, :emergency_code, :type_of, :name, :capacity, :on_duty, :created_at, :updated_at
+json.responder do
+  json.emergency_code nil
+  json.type @responder.type_of
+  json.name @responder.name
+  json.capacity @responder.capacity
+  json.on_duty false
+end
