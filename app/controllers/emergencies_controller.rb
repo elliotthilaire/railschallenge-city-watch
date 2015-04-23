@@ -20,10 +20,6 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.new
   end
 
-  # GET /emergencies/1/edit
-  def edit
-  end
-
   # POST /emergencies
   def create
     @emergency = Emergency.new(create_emergency_params)
@@ -42,15 +38,6 @@ class EmergenciesController < ApplicationController
       else
         render json: @emergency.errors, status: :unprocessable_entity
       end
-  end
-
-  # DELETE /emergencies/1
-  def destroy
-    @emergency.destroy
-    respond_to do |format|
-      format.html { redirect_to emergencies_url, notice: 'Emergency was successfully destroyed.' }
-      format.json { head :no_content }
-    end
   end
 
   private
