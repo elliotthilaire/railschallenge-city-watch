@@ -10,4 +10,6 @@ class Responder < ActiveRecord::Base
   validates :name,  uniqueness: true
   validates :name, :type, :capacity, presence: true
   validates :capacity, inclusion: 1..5
+
+  belongs_to :emergency, foreign_key: :emergency_code, primary_key: :code
 end
