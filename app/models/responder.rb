@@ -4,7 +4,7 @@ class Responder < ActiveRecord::Base
 
   scope :by_type, -> (type) { where(type: type) }
   scope :available, -> { where(emergency_code: nil) }
-  scope :on_duty, -> { where(on_duty: true)}
+  scope :on_duty, -> { where(on_duty: true) }
   scope :ready_for_dispatch, -> { available.on_duty }
 
   validates :name,  uniqueness: true
