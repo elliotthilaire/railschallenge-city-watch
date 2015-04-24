@@ -3,6 +3,24 @@ class RespondersController < ApplicationController
 
   # GET /responders
   def index
+    if params[:show] == 'capacity'
+
+      #############  This needs help. yikes. 
+      @capacity_report = {}
+      types = Responder.uniq.pluck(:type)
+      types.each do |type|
+        @capacity_report[type] = [
+          Responder.by_type(type).sum(:capacity),
+          Responder.by_type(type).available.sum(:capacity),
+          Responder.by_type(type).on_duty.sum(:capacity),
+          Responder.by_type(type).ready_for_dispatch.sum(:capacity)
+        ]
+      end
+      #############
+
+      render json: { capacity: @capacity_report } 
+    end
+
     @responders = Responder.all
     render nothing: true, status: :not_found if @responders.nil?
   end
