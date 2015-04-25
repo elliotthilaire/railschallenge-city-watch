@@ -1,28 +1,12 @@
-# Analyses a dispatch and sets full response or not
+# Analyses a dispatch and sets full response to true, or not
 class DispatchAnalyser
   def initialize(emergency)
-    @emergency = emergency
     # get arrary e.g. [ true, false, true ]
     array = EMERGENCY_TYPES.collect do |type|
-      get_severity(type) <= @emergency.responders.by_type(type).sum(:capacity)
+      emergency.severity(type) <= emergency.responders.by_type(type).sum(:capacity)
     end
 
-    # if all items in array is true, set emergency full response
-    if array.all?
-      @emergency.full_response = true
-      @emergency.save
-    end
-  end
-
-  def get_severity(type)
-    case type
-    when 'Fire'
-      severity = @emergency.fire_severity
-    when 'Police'
-      severity = @emergency.police_severity
-    when 'Medical'
-      severity = @emergency.medical_severity
-    end
-    severity
+    # update full response if full response for all type
+    emergency.update(full_response: true) if array.all?
   end
 end
