@@ -2,15 +2,12 @@
 class DispatchAnalyser
   def initialize(emergency)
     @emergency = emergency
-    set_full_response
-  end
-
-  def set_full_response
-    types = %w(Fire Police Medical)
-    array = types.collect do |type|
+    # get arrary e.g. [ true, false, true ]
+    array = EMERGENCY_TYPES.collect do |type|
       get_severity(type) <= @emergency.responders.by_type(type).sum(:capacity)
     end
 
+    # if all items in array is true, set emergency full response
     if array.all?
       @emergency.full_response = true
       @emergency.save
