@@ -5,7 +5,7 @@ class RespondersController < ApplicationController
   def index
     if params[:show] == 'capacity'
 
-      #############  This needs help. yikes. 
+      #############  This needs help. yikes.
       @capacity_report = {}
       types = Responder.uniq.pluck(:type)
       types.each do |type|
@@ -18,7 +18,7 @@ class RespondersController < ApplicationController
       end
       #############
 
-      render json: { capacity: @capacity_report } 
+      render json: { capacity: @capacity_report }
     end
 
     @responders = Responder.all

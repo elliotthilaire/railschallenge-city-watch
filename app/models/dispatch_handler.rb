@@ -10,13 +10,10 @@ class DispatchHandler
     dispatch_units
   end
 
-  private 
+  private
 
   def dispatch_units
-
-    if @severity == 0
-      return
-    end
+    return if @severity == 0
 
     if  @severity >= @responders.sum(:capacity)
       dispatch_all_units
@@ -24,7 +21,6 @@ class DispatchHandler
     end
 
     use_subset_sum
-    
   end
 
   def update_responder(responder)
@@ -38,20 +34,17 @@ class DispatchHandler
 
   def use_subset_sum
     # use subset_sum to find best match for units
-    # there is currently a known bug that if 
-    array_of_available_capacities = @responders.collect { |responder| responder.capacity }
+    # there is currently a known bug that if
+    # subset doesnt have an exact solution nothing will happen
+    array_of_available_capacities = @responders.collect(&:capacity)
     array_of_suitable_capacities = SubsetSum.subset_sum(array_of_available_capacities, @severity)
 
-    if array_of_suitable_capacities
-      array_of_suitable_capacities.each do |capacity|
-        responder =  @responders.find_by(capacity: capacity)
-        update_responder(responder)
-      end
+    return unless array_of_suitable_capacities
+    array_of_suitable_capacities.each do |capacity|
+      responder =  @responders.find_by(capacity: capacity)
+      update_responder(responder)
     end
-
   end
-
-
 
   def get_severity(type)
     case type
