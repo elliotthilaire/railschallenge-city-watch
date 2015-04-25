@@ -44,12 +44,11 @@ class DispatchHandler
   end
 
   def dispatch_all_units
-    @responders.each do |responder|
-      responder.emergency_code = @emergency.code
-      responder.save!
-
-    end
-    #@responders.update_all(emergency_code: @emergency.code)
+    #@responders.each do |responder|
+    #  responder.emergency_code = @emergency.code
+    #  responder.save!
+    #end
+    @responders.update_all(emergency_code: @emergency.code)
   end
 
   def try_subset_sum
