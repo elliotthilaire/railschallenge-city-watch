@@ -11,7 +11,7 @@ class CapacityReport
     capacity_report
   end
 
-  def generate_report_for_type(type)
+  def self.generate_report_for_type(type)
     responders = Responder.by_type(type)
     [
       responders.sum(:capacity),
