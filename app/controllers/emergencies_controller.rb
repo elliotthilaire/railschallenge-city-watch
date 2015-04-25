@@ -16,7 +16,7 @@ class EmergenciesController < ApplicationController
     @emergency = Emergency.new(create_emergency_params)
 
     if @emergency.save
-      DispatchCall.new(@emergency)
+      DispatchRouter.new(@emergency)
       render :show, status: :created, location: @emergency
     else
       render json: { message: @emergency.errors }, status: :unprocessable_entity
@@ -26,6 +26,7 @@ class EmergenciesController < ApplicationController
   # PATCH/PUT /emergencies/E-00000001
   def update
     if @emergency.update(update_emergency_params)
+      free_responders if @emergency.resolved_at
       render :show, status: :ok, location: @emergency
     else
       render json: @emergency.errors, status: :unprocessable_entity
@@ -44,5 +45,12 @@ class EmergenciesController < ApplicationController
 
   def update_emergency_params
     params.require(:emergency).permit(:fire_severity, :police_severity, :medical_severity, :resolved_at)
+  end
+
+  def free_responders
+    @emergency.responders.each do |responder|
+      responder.emergency_code = nil
+      responder.save!
+    end
   end
 end

@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ResponderTest < ActiveSupport::TestCase
-
   def setup
   end
 
@@ -12,7 +11,4 @@ class ResponderTest < ActiveSupport::TestCase
   def test_valid_factory
     assert responder.valid?
   end
-
-
-
 end
