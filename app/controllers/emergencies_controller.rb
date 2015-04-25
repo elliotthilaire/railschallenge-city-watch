@@ -49,9 +49,6 @@ class EmergenciesController < ApplicationController
   end
 
   def free_responders
-    @emergency.responders.each do |responder|
-      responder.emergency_code = nil
-      responder.save!
-    end
+    @emergency.responders.update_all(emergency_code: nil)
   end
 end
