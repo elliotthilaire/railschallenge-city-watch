@@ -4,7 +4,7 @@ class EmergenciesController < ApplicationController
   # GET /emergencies
   def index
     @emergencies = Emergency.all
-    @responses = [ Emergency.where(full_response: true).count, Emergency.count ]
+    @response_report = ResponseReport.generate
   end
 
   # GET /emergencies/E-00000001

@@ -4,5 +4,5 @@ json.emergencies do
   end
 end
 
-json.full_responses @responses
+json.full_responses @response_report
 
