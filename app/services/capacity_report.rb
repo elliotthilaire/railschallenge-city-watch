@@ -1,10 +1,8 @@
 class CapacityReport
   def self.generate
     capacity_report = {}
-    # get the unique types
-    types = %w(Fire Medical Police)
     # generate as a hash of arrays
-    types.each do |type|
+    EMERGENCY_TYPES.each do |type|
       capacity_report[type] = generate_report_for_type(type)
     end
     # return the finished report
