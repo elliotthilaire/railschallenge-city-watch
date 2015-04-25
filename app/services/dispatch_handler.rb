@@ -5,7 +5,7 @@ class DispatchHandler
     @emergency = emergency
     @type = type
     @severity = get_severity(type)
-    @responders = Responder.by_type(type).ready_for_dispatch
+    @responders = Responder.by_type(type).ready_for_dispatch.order(capacity: :asc)
 
     dispatch_units
   end
