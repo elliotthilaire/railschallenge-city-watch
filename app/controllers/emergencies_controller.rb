@@ -27,7 +27,7 @@ class EmergenciesController < ApplicationController
   # PATCH/PUT /emergencies/E-00000001
   def update
     if @emergency.update(update_emergency_params)
-      free_responders if @emergency.resolved_at
+      @emergency.resolved_at && free_responders
       render :show, status: :ok, location: @emergency
     else
       render json: @emergency.errors, status: :unprocessable_entity

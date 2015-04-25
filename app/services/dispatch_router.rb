@@ -16,9 +16,10 @@ class DispatchRouter
       get_severity(type) <= @emergency.responders.by_type(type).sum(:capacity)
     end
 
-    return if array.all?
-    @emergency.full_response = true
-    @emergency.save
+    if array.all?
+      @emergency.full_response = true
+      @emergency.save
+    end
   end
 
   def get_severity(type)
