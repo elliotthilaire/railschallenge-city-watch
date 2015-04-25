@@ -1,3 +1,4 @@
+# creates an array [number of fully responded emergency, total number emergencies ]
 class ResponseReport
   def self.generate
     [
