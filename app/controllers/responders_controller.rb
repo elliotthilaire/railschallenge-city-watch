@@ -4,10 +4,7 @@ class RespondersController < ApplicationController
   # GET /responders
   def index
     if params[:show] == 'capacity'
-
-
       @capacity_report = CapacityReport.generate
-
       render json: { capacity: @capacity_report }
     end
 
