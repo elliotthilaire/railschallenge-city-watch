@@ -1,14 +1,11 @@
 # Calls the DispatchHandler for each type of emergency
 class DispatchRouter
   def initialize(emergency)
-    @emergency = emergency
-
     types = %w(Fire Police Medical)
     types.each do |type|
       DispatchHandler.new(emergency, type)
     end
 
-    DispatchAnalyser.new(@emergency)
+    DispatchAnalyser.new(emergency)
   end
 end
-
