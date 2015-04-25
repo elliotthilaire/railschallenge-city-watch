@@ -3,6 +3,7 @@ class RespondersController < ApplicationController
 
   # GET /responders
   def index
+    # GET /responders/?show=capacity
     if params[:show] == 'capacity'
       @capacity_report = CapacityReport.generate
       render json: { capacity: @capacity_report }
@@ -39,12 +40,10 @@ class RespondersController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_responder
     @responder = Responder.find_by(name: params[:name])
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def create_responder_params
     params.require(:responder).permit(:type, :name, :capacity)
   end

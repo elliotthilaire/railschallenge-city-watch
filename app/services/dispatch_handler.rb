@@ -30,7 +30,7 @@ class DispatchHandler
       return
     end
 
-    # need to look at a combination of lower numbers
+    # FIXME: need to look at a combination of lower numbers
     # use subset_sum for now
     try_subset_sum
   end
@@ -45,7 +45,7 @@ class DispatchHandler
   end
 
   def try_subset_sum
-    # use subset_sum to find best match for units
+    # FIXME: use subset_sum to find best match for units
     # there is currently a known bug that if
     # subset doesnt have an exact solution nothing will happen
     array_of_available_capacities = @responders.collect(&:capacity)

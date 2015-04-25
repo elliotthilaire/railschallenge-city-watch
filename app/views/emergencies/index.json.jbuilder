@@ -5,4 +5,3 @@ json.emergencies do
 end
 
 json.full_responses @response_report
-

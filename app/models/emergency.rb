@@ -7,6 +7,7 @@ class Emergency < ActiveRecord::Base
 
   has_many :responders, foreign_key: :emergency_code, primary_key: :code
 
+  # TODO: make this work for all types
   def severity(type)
     case type
     when 'Fire'

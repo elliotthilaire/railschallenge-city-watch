@@ -1,5 +1,5 @@
 class Responder < ActiveRecord::Base
-  # 'type' is reserved as a column name
+  # 'type' is reserved as a column name, so alias it instead
   alias_attribute :type, :type_of
 
   scope :by_type, -> (type) { where(type: type) }

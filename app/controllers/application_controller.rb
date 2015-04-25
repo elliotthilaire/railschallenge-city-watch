@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::UnpermittedParameters, with: :unpermitted_parameters
 
   def not_found
+    # FIXME: work out how to use public 404.json
     render json: { message: 'page not found' }, status: :not_found
   end
 
