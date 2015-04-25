@@ -6,7 +6,7 @@ class Responder < ActiveRecord::Base
   scope :available, -> { where(emergency_code: nil) }
   scope :on_duty, -> { where(on_duty: true) }
   scope :ready_for_dispatch, -> { available.on_duty }
-  scope :capacity_is_at_least, -> (capacity) { where("capacity >= ?", capacity) }
+  scope :capacity_is_at_least, -> (capacity) { where('capacity >= ?', capacity) }
 
   validates :name,  uniqueness: true
   validates :name, :type, :capacity, presence: true

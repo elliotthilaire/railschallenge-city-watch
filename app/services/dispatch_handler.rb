@@ -24,18 +24,14 @@ class DispatchHandler
 
     # dispatch a matching unit, or the next larger
     responder = @responders.capacity_is_at_least(@severity).first
-    if responder 
+    if responder
       update_responder(responder)
       return
     end
 
-    # this gets complicated, dispatch a unit
-
-    
     # need to look at a combination of lower numbers
     # use subset_sum for now
     try_subset_sum
-
   end
 
   def update_responder(responder)
@@ -60,9 +56,9 @@ class DispatchHandler
       responder =  @responders.find_by(capacity: capacity)
       update_responder(responder)
     end
-    
+
     # nice.. it worked
-    return true
+    true
   end
 
   def get_severity(type)

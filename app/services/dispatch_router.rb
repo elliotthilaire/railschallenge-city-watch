@@ -1,6 +1,6 @@
 class DispatchRouter
   def initialize(emergency)
-  	@emergency = emergency
+    @emergency = emergency
     types = %w(Fire Police Medical)
     types.each do |type|
       DispatchHandler.new(emergency, type)
@@ -15,13 +15,13 @@ class DispatchRouter
     array = types.collect do |type|
       get_severity(type) <= @emergency.responders.by_type(type).sum(:capacity)
     end
-    if array.all? 
-    	@emergency.full_response = true
-    	@emergency.save
-    end
+
+    return if array.all?
+    @emergency.full_response = true
+    @emergency.save
   end
 
-   def get_severity(type)
+  def get_severity(type)
     case type
     when 'Fire'
       severity = @emergency.fire_severity
