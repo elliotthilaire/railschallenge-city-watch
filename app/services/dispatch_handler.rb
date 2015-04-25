@@ -1,5 +1,6 @@
 require 'subset_sum'
 
+# Handles the dispatching of units for a single type
 class DispatchHandler
   def initialize(emergency, type)
     @emergency = emergency
