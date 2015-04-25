@@ -4,7 +4,7 @@ class DispatchHandler
   def initialize(emergency, type)
     @emergency = emergency
     @type = type
-    @severity = get_severity(type)
+    @severity = emergency.severity(type)
     @responders = Responder.by_type(type).ready_for_dispatch.order(capacity: :asc)
 
     dispatch_units
@@ -59,17 +59,5 @@ class DispatchHandler
 
     # nice.. it worked
     true
-  end
-
-  def get_severity(type)
-    case type
-    when 'Fire'
-      severity = @emergency.fire_severity
-    when 'Police'
-      severity = @emergency.police_severity
-    when 'Medical'
-      severity = @emergency.medical_severity
-    end
-    severity
   end
 end
