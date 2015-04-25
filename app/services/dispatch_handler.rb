@@ -13,14 +13,29 @@ class DispatchHandler
   private
 
   def dispatch_units
+    # no severity, don't dispatch any units
     return if @severity == 0
 
-    if  @severity >= @responders.sum(:capacity)
+    # dispatch all units
+    if @severity >= @responders.sum(:capacity)
       dispatch_all_units
       return
     end
 
-    use_subset_sum
+    # dispatch a matching unit, or the next larger
+    responder = @responders.capacity_is_at_least(@severity).first
+    if responder 
+      update_responder(responder)
+      return
+    end
+
+    # this gets complicated, dispatch a unit
+
+    
+    # need to look at a combination of lower numbers
+    # use subset_sum for now
+    try_subset_sum
+
   end
 
   def update_responder(responder)
@@ -37,18 +52,22 @@ class DispatchHandler
     #@responders.update_all(emergency_code: @emergency.code)
   end
 
-  def use_subset_sum
+  def try_subset_sum
     # use subset_sum to find best match for units
     # there is currently a known bug that if
     # subset doesnt have an exact solution nothing will happen
     array_of_available_capacities = @responders.collect(&:capacity)
     array_of_suitable_capacities = SubsetSum.subset_sum(array_of_available_capacities, @severity)
 
-    return unless array_of_suitable_capacities
+    # if this can't find a solution, return false
+    return false unless array_of_suitable_capacities
     array_of_suitable_capacities.each do |capacity|
       responder =  @responders.find_by(capacity: capacity)
       update_responder(responder)
     end
+    
+    # nice.. it worked
+    return true
   end
 
   def get_severity(type)
