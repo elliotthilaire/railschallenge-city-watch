@@ -4,6 +4,7 @@ class EmergenciesController < ApplicationController
   # GET /emergencies
   def index
     @emergencies = Emergency.all
+    @responses = [ Emergency.where(full_response: true).count, Emergency.count ]
   end
 
   # GET /emergencies/E-00000001
@@ -26,7 +27,9 @@ class EmergenciesController < ApplicationController
   # PATCH/PUT /emergencies/E-00000001
   def update
     if @emergency.update(update_emergency_params)
-      free_responders if @emergency.resolved_at
+      if @emergency.resolved_at
+        free_responders
+      end
       render :show, status: :ok, location: @emergency
     else
       render json: @emergency.errors, status: :unprocessable_entity
