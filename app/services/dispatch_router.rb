@@ -1,6 +1,8 @@
-# Calls the DispatchHandler for each type of emergency
+# Informs the appropriate departments of emergencies
 class DispatchRouter
-  # put your emergency handling code here
+  # I think this is actually quite cool
+  # There's possibility to easily use different code
+  # for different types of emergency dispatch teams.
   def self.notify_new_emergency(emergency)
     # call the dispatch handler for each emergency type
     EMERGENCY_TYPES.each { |type| DispatchHandler.new(emergency, type) }
