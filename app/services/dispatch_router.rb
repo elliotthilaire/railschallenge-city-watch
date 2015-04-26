@@ -10,9 +10,9 @@ class DispatchRouter
     DispatchAnalyser.new(emergency)
   end
 
-  # actions for when an emergency is over
-  def self.notify_emergency_over(emergency)
-    # free up responders
-    emergency.responders.update_all(emergency_code: nil)
+  # actions to take when emergency is updated
+  def self.notify_update(emergency)
+    # free up responders if emergency is resolved
+    emergency.responders.update_all(emergency_code: nil) if emergency.resolved_at
   end
 end
