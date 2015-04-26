@@ -8,12 +8,12 @@ class DispatchHandler
     @severity = emergency.severity(type)
     @responders = Responder.by_type(type).ready_for_dispatch.order(capacity: :asc)
 
-    dispatch_units
+    choose_and_dispatch_units
   end
 
   private
 
-  def dispatch_units
+  def choose_and_dispatch_units
     # no severity, don't dispatch any units
     return if @severity == 0
 
@@ -27,14 +27,14 @@ class DispatchHandler
     # look for an exact match, or the next larger
     responder = @responders.capacity_is_at_least(@severity).first
     if responder
-      update_responder(responder)
+      dispatch_unit(responder)
       return
     end
 
     # try dispatching a set of units
     # use subset_sum algorithm http://en.wikipedia.org/wiki/Subset_sum_problem
     # there's a gem for that
-    try_subset_sum
+    dispatch_set_of_units
 
     # FIXME: responders = [5, 3], severity = 7
     # The above scenario will not be handled correctly because the subset_sum
@@ -43,30 +43,28 @@ class DispatchHandler
     # this feature added. Clarification is required on how to handle more complex set.
   end
 
-  def update_responder(responder)
-    responder.emergency_code = @emergency.code
-    responder.save!
+  def dispatch_unit(responder)
+    responder.update(emergency_code: @emergency.code)
   end
 
   def dispatch_all_units
     @responders.update_all(emergency_code: @emergency.code)
   end
 
-  def try_subset_sum
-    # FIXME: use subset_sum to find best match for units
-    # there is currently a known bug that if
-    # subset doesnt have an exact solution nothing will happen
+  def dispatch_set_of_units
+    # get an array of available capacities e.g. [4,3,5,2]
     array_of_available_capacities = @responders.collect(&:capacity)
+    # use subset_sum to find a combination that matches the severity
     array_of_suitable_capacities = SubsetSum.subset_sum(array_of_available_capacities, @severity)
 
-    # if this can't find a solution, return false
+    # if if a solution doesn't exist, do nothing and return
+    # FIXME: ideally this behaviour should be fixed but is not currently required to pass tests.
     return false unless array_of_suitable_capacities
+
+    # search for responders by matching capacity and dispatch them
     array_of_suitable_capacities.each do |capacity|
       responder =  @responders.find_by(capacity: capacity)
-      update_responder(responder)
+      dispatch_unit(responder)
     end
-
-    # nice.. it worked
-    true
   end
 end
