@@ -1,5 +1,5 @@
 class EmergenciesController < ApplicationController
-  before_action :set_emergency, only: [:show, :edit, :update, :destroy]
+  before_action :set_emergency, only: [:show, :update]
 
   # GET /emergencies
   def index

@@ -1,5 +1,5 @@
 class RespondersController < ApplicationController
-  before_action :set_responder, only: [:show, :edit, :update]
+  before_action :set_responder, only: [:show, :update]
 
   # GET /responders
   def index
