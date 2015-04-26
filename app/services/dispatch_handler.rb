@@ -17,22 +17,30 @@ class DispatchHandler
     # no severity, don't dispatch any units
     return if @severity == 0
 
-    # dispatch all units
+    # too severe to handle, dispatch all units
     if @severity >= @responders.sum(:capacity)
       dispatch_all_units
       return
     end
 
-    # dispatch a matching unit, or the next larger
+    # try dispatching with one unit
+    # look for an exact match, or the next larger
     responder = @responders.capacity_is_at_least(@severity).first
     if responder
       update_responder(responder)
       return
     end
 
-    # FIXME: need to look at a combination of lower numbers
-    # use subset_sum for now
+    # try dispatching a set of units
+    # use subset_sum algorithm http://en.wikipedia.org/wiki/Subset_sum_problem
+    # there's a gem for that
     try_subset_sum
+
+    # FIXME: responders = [5, 3], severity = 7
+    # The above scenario will not be handled correctly because the subset_sum
+    # algorithm will not find an exact match. This is not required to make current
+    # test suite pass, hence is not implemented. A new test should be written and then
+    # this feature added. Clarification is required on how to handle more complex set.
   end
 
   def update_responder(responder)
