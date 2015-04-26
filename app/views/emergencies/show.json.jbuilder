@@ -5,5 +5,5 @@ json.emergency do
   json.medical_severity @emergency.medical_severity
   json.resolved_at @emergency.resolved_at
   json.full_response @emergency.full_response
-  json.responders @emergency.responders.collect { |responder| responder.name }
+  json.responders responder_names(@emergency.responders)
 end
