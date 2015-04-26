@@ -6,7 +6,7 @@ class DispatchHandler
     @emergency = emergency
     @type = type
     @severity = emergency.severity(type)
-    @responders = Responder.by_type(type).ready_for_dispatch.order(capacity: :asc)
+    @ready_responders = Responder.by_type(type).ready_for_dispatch.order(capacity: :asc)
 
     choose_and_dispatch_units
   end
@@ -18,53 +18,59 @@ class DispatchHandler
     return if @severity == 0
 
     # too severe to handle, dispatch all units
-    if @severity >= @responders.sum(:capacity)
-      dispatch_all_units
+    if @severity >= @ready_responders.sum(:capacity)
+      responders = @ready_responders
+      dispatch_units(responders)
       return
     end
 
     # try dispatching with one unit
     # look for an exact match, or the next larger
-    responder = @responders.capacity_is_at_least(@severity).first
+    responder = @ready_responders.capacity_is_at_least(@severity).first
     if responder
       dispatch_unit(responder)
       return
     end
 
-    # try dispatching a set of units
-    # use subset_sum algorithm http://en.wikipedia.org/wiki/Subset_sum_problem
-    # there's a gem for that
-    dispatch_set_of_units
+    # find a set of units to dispatch
+    responders = find_set_of_responders
+    dispatch_units(responders) if responders
 
-    # FIXME: responders = [5, 3], severity = 7
-    # The above scenario will not be handled correctly because the subset_sum
-    # algorithm will not find an exact match. This is not required to make current
-    # test suite pass, hence is not implemented. A new test should be written and then
-    # this feature added. Clarification is required on how to handle more complex set.
+    # FIXME: responders = [8,2,3,4] severity = 9
+    # This example scenario will not be handled correctly because find_set_of_responders will
+    # not find an exact match. Is it better to dispatch [8,2] or [2,3,4] ?
+    # This is not required to make current test suite pass, hence has not been implemented.
+    # New test with desired behaviour should be created and then find_set_of_responders modified.
   end
 
   def dispatch_unit(responder)
     responder.update(emergency_code: @emergency.code)
   end
 
-  def dispatch_all_units
-    @responders.update_all(emergency_code: @emergency.code)
+  def dispatch_units(responders)
+    responders.update_all(emergency_code: @emergency.code)
   end
 
-  def dispatch_set_of_units
+  def find_set_of_responders
     # get an array of available capacities e.g. [4,3,5,2]
-    array_of_available_capacities = @responders.collect(&:capacity)
-    # use subset_sum to find a combination that matches the severity
-    array_of_suitable_capacities = SubsetSum.subset_sum(array_of_available_capacities, @severity)
+    array_of_available_capacities = @ready_responders.collect(&:capacity)
+
+    # use subset_sum gem to find an exact solution.
+    # it returns an array of capacities whose sum matches the severity
+    # e.g. capacities = [5,4,3,1], severity = 7 would product solution_array = [4,3]
+    solution_array = SubsetSum.subset_sum(array_of_available_capacities, @severity)
 
     # if if a solution doesn't exist, do nothing and return
     # FIXME: ideally this behaviour should be fixed but is not currently required to pass tests.
-    return false unless array_of_suitable_capacities
+    return nil unless solution_array
 
-    # search for responders by matching capacity and dispatch them
-    array_of_suitable_capacities.each do |capacity|
-      responder =  @responders.find_by(capacity: capacity)
-      dispatch_unit(responder)
+    # return an active record object containing the chosen responders
+    # OPTIMIZE: currently turning solutions_array into an array of responder_names
+    # then producing an activerecord relation using responder_names
+    responder_names = []
+    solution_array.each do |capacity|
+      responder_names << @ready_responders.find_by(capacity: capacity).name
     end
+    @ready_responders.where(name: responder_names)
   end
 end
