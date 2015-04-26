@@ -8,7 +8,6 @@ class RespondersController < ApplicationController
       @capacity_report = CapacityReport.generate
       render json: { capacity: @capacity_report }
     end
-
     @responders = Responder.all
     render nothing: true, status: :not_found if @responders.nil?
   end
@@ -21,7 +20,6 @@ class RespondersController < ApplicationController
   # POST /responders/
   def create
     @responder = Responder.new(create_responder_params)
-
     if @responder.save
       render :show, status: :created, location: @responder
     else

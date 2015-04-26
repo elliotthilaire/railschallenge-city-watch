@@ -15,7 +15,6 @@ class EmergenciesController < ApplicationController
   # POST /emergencies
   def create
     @emergency = Emergency.new(create_emergency_params)
-
     if @emergency.save
       DispatchRouter.notify_new(@emergency)
       render :show, status: :created, location: @emergency
