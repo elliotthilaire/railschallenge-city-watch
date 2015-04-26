@@ -1,7 +1,4 @@
 json.responder do
-  json.emergency_code @responder.emergency_code
-  json.type @responder.type
-  json.name @responder.name
-  json.capacity @responder.capacity
-  json.on_duty @responder.on_duty
+  json.extract! @responder, :emergency_code, :type, :name, :capacity, :on_duty
 end
+
